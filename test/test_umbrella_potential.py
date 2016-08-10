@@ -27,3 +27,7 @@ def test_new_center_pos():
     newcenter=us.center_correction+us.center
     s.center_check()
     assert_almost_equal(newcenter,s.umbrella.center,2)
+    if(len(s.accepted)!=0):
+        assert_almost_equal(givencenter,s.accepted[-1],decimal=16)
+    elif(len(s.rejected)!=0):
+        assert_almost_equal(givencenter,s.rejected[-1],decimal=16)
