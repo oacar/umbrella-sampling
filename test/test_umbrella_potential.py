@@ -17,13 +17,13 @@ def test_randomised_sanity_check():
     assert_almost_equal(up.slope, 0.0, decimal=16)
 
 def test_new_center_pos():
-	givencenter=np.random.random()
-	spring_const=np.random.randint(1,10)
-	traj=np.random.rand(100)
-	us=UmbrellaPotential(givencenter, spring_const)
-	us.add_trajectory(traj)
-	overlap=np.random.random()
-	s=UmbrellaIterator(us, overlap)
-	newcenter=us.center_correction+us.center
-	s.center_check()
-	assert_almost_equal(newcenter,s.umbrella.center,2)
+    givencenter=np.random.random()
+    spring_const=np.random.randint(1,10)
+    traj=np.random.rand(100)
+    us=UmbrellaPotential(givencenter, spring_const)
+    us.add_trajectory(traj)
+    overlap=np.random.random()
+    s=UmbrellaIterator(us, overlap)
+    newcenter=us.center_correction+us.center
+    s.center_check()
+    assert_almost_equal(newcenter,s.umbrella.center,2)
