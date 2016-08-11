@@ -1,5 +1,6 @@
 import numpy as _np
 from umbrella_potential import UmbrellaPotential as _up
+import functions as func
 class UmbrellaIterator(object):
 	rejected=[]
 	accepted=[]
@@ -30,9 +31,13 @@ class UmbrellaIterator(object):
 			if r <= overlap+0.002 and r >= overlap-0.002:
 				return r[-1]	
 				
-	def center_check(self):
-		if not (self.umbrella.center==self.umbrella.effective_center):##not exactly equal but within a range, change it accordingly
-			UmbrellaIterator.rejected.append(self.umbrella.center)
-			self.umbrella.center=self.umbrella.center+self.umbrella.center_correction
-		else:
-			UmbrellaIterator.accepted.append(self.umbrella.center)
+    def center_check(self):
+        if not (abs(self.umbrella.center-self.umbrella.effective_center) < 0.5 * 10**(-3)):##check if given center and actual center are almost equal up to 3 decimal
+            if(func.check_if_exists(UmbrellaIterator.rejected, self.umbrella.effective_center)):##if current effective_center is already rejected, than increase the spring constant
+                self.umbrella.spring_constant=self.umbrella.spring_constant*2
+            
+            UmbrellaIterator.rejected.append(self.umbrella.center)
+            self.umbrella.center=self.umbrella.center+self.umbrella.center_correction ##change umbrella center adding with the center corrention value
+
+        else:
+            UmbrellaIterator.accepted.append(self.umbrella.center)
