@@ -9,9 +9,9 @@ class UmbrellaIterator(object):
         self.overlap=overlap
         self.rejected=[]
         self.accepted=None
-        self.prev_effective_center=None
+
     def find_overlap(self, x2, k2=None):
-        x1=self.umbrella.center
+        x1=self.umbrella.effective_center
         k1=self.umbrella.spring_constant
         if k2==None:
             k2=k1
@@ -23,27 +23,26 @@ class UmbrellaIterator(object):
     
     
     def find_next_umbrella(self): ##
-        x1=self.umbrella.center
+        x1=self.umbrella.effective_center
         k1=self.umbrella.spring_constant
         overlap=self.overlap
         bins=_np.arange(x1, x1+5,0.001).reshape(-1,1)
         for x in bins:
             r = self.find_overlap(x)
             if r <= overlap+0.002 and r >= overlap-0.002:
-                return r[-1]
+                return x
 
 
     def center_check(self):
         if(len(self.rejected)!=0):
-            if(_np.abs(self.rejected[0]-self.umbrella.effective_center)>0.1):
+            if(_np.abs(self.rejected[0]-self.umbrella.effective_center)>0.01):
                 if(func.check_if_exists(self.rejected, self.umbrella.effective_center)):##if current effective_center is already rejected, than increase the spring constant
                     self.umbrella.spring_constant=self.umbrella.spring_constant*2
                 
                 self.rejected.append(self.umbrella.center)
-                self.umbrella.center=self.umbrella.center+self.umbrella.center_correction ##change umbrella center adding with the center corrention value
+                self.umbrella.center=self.rejected[0]+self.umbrella.center_correction ##change umbrella center adding with the center corrention value
             else:
                 self.accepted=self.umbrella.center
-                self.prev_effective_center=None
         else:
             if(_np.abs(self.umbrella.center_correction)<0.1):
                 self.accepted=self.umbrella.center
