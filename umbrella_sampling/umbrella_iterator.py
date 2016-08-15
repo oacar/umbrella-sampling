@@ -58,7 +58,17 @@ class UmbrellaIterator(object):
                 self.umbrella.center=self.umbrella.center+self.umbrella.center_correction ##change umbrella center adding with the center corrention value
 
                 
-                
+r"""Inputs:
+rangemin:Minimum coordinate of reaction coordinate
+rangemax:Maximum coordinate of reaction coordinate
+overlap:Overlap value which the umbrellas should have
+first_umbrella:the first umbrella position should be placed by user
+spring_constant:Spring constants of the umbrellas needed for overlap calculation
+direction: can take string values positive or negative. Enter it in "" marks. 
+
+returns theoretical umbrella positions with given inputs in the given direction
+"""
+
 def predict_umbrella_locations(rangemin, rangemax, overlap, first_umbrella, spring_constant, direction):
     us=_up(first_umbrella,spring_constant)
     ui=UmbrellaIterator(us,overlap)
