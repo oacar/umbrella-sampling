@@ -77,6 +77,11 @@ def predict_umbrella_locations(rangemin, rangemax, overlap, first_umbrella, spri
     while ui.find_next_umbrella(direction)<rangemax and ui.find_next_umbrella(direction)>rangemin:
         locations.append(ui.find_next_umbrella(direction))
         ui.umbrella.effective_center=locations[-1] 
-        print ui.umbrella.effective_center
-        
     return locations
+
+def check_if_exists(list_, number):
+    check=False
+    for i in range(len(list_)) :
+        if (np.abs(list_[i]-number)<0.01):
+            check= True
+    return check
