@@ -10,6 +10,8 @@ class UmbrellaIterator(object):
         self.rejected=[]
         self.accepted=None
         self.check=0
+r"""overlap is calculated by integrating product of 2 gaussian functions, i.e. umbrella distributions
+if k2 is not given then it will be assumed same spring constants for both umbrellas"""
 
     def find_overlap(self, x2, k2=None):
         x1=self.umbrella.effective_center
@@ -33,10 +35,12 @@ class UmbrellaIterator(object):
             bins=_np.arange(x1-5, x1,0.001).reshape(-1,1)
         for x in bins:
             r = self.find_overlap(x)
-            if r <= overlap+0.002 and r >= overlap-0.002:
+            if r <= overlap+0.003 and r >= overlap-0.003:
                 return round(x[-1],3)
 
-
+r"""center_check function takes an umbrella iterator object
+It compares the effective center and given center of umbrella, if they differ more than 0.1 then 
+the center will be rejected and new center will be assigned to this umbrella operator object"""
     def center_check(self):
         if(len(self.rejected)!=0):
             if(_np.abs(self.rejected[0]-self.umbrella.effective_center)>0.01):
